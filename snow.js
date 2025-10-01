@@ -1,0 +1,154 @@
+// --- Theme toggle logic ---
+
+let darkTheme = false;
+const themeBtn = document.getElementById('toggle-theme');
+
+function setTheme(dark) {
+  const body = document.body;
+  const timeBlock = document.querySelector('.time-block');
+  const html = document.documentElement;
+  if (dark) {
+    body.style.backgroundImage = "url('BGn.svg'), linear-gradient(135deg, #001f3f, #011627)";
+    if (timeBlock) timeBlock.style.borderImageSource = "url('Bordern.svg')";
+    html.classList.add('dark-theme');
+    document.documentElement.style.setProperty('--timer-bg', '#07003C');
+    document.documentElement.style.setProperty('--timer-text', '#D1B500');
+    themeBtn.textContent = 'Тема: ТЁМНАЯ';
+  } else {
+    body.style.backgroundImage = "url('BG.svg'), linear-gradient(135deg, #001f3f, #011627)";
+    if (timeBlock) timeBlock.style.borderImageSource = "url('Border.svg')";
+    html.classList.remove('dark-theme');
+    document.documentElement.style.setProperty('--timer-bg', '#FFECC8');
+    document.documentElement.style.setProperty('--timer-text', '#DA5252');
+    themeBtn.textContent = 'Тема: СВЕТЛАЯ';
+  }
+}
+
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    darkTheme = !darkTheme;
+    setTheme(darkTheme);
+  });
+}
+
+setTheme(false);
+// Анимированный снег для NewYearTimer
+const canvas = document.getElementById('snow-canvas');
+const ctx = canvas.getContext('2d');
+let width = window.innerWidth;
+let height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
+
+const snowflakes = [];
+const SNOWFLAKE_COUNT = Math.floor(width / 10);
+
+function randomBetween(a, b) {
+  return a + Math.random() * (b - a);
+}
+
+function createSnowflake() {
+  return {
+    x: randomBetween(0, width),
+    y: randomBetween(-height, 0),
+    r: randomBetween(1.5, 4),
+    speed: randomBetween(0.7, 2.5),
+    wind: randomBetween(-0.5, 0.5),
+    opacity: randomBetween(0.6, 1)
+  };
+}
+
+for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
+  snowflakes.push(createSnowflake());
+}
+
+function drawSnowflakes() {
+  ctx.clearRect(0, 0, width, height);
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  for (const flake of snowflakes) {
+    ctx.globalAlpha = flake.opacity;
+    ctx.beginPath();
+    ctx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = '#fff';
+    ctx.shadowBlur = 8;
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function updateSnowflakes() {
+  for (const flake of snowflakes) {
+    flake.y += flake.speed;
+    flake.x += flake.wind;
+    if (flake.y > height + flake.r) {
+      flake.x = randomBetween(0, width);
+      flake.y = randomBetween(-20, -flake.r);
+      flake.r = randomBetween(1.5, 4);
+      flake.speed = randomBetween(0.7, 2.5);
+      flake.wind = randomBetween(-0.5, 0.5);
+      flake.opacity = randomBetween(0.6, 1);
+    }
+    if (flake.x < -flake.r) flake.x = width + flake.r;
+    if (flake.x > width + flake.r) flake.x = -flake.r;
+  }
+}
+
+function animateSnow() {
+  drawSnowflakes();
+  updateSnowflakes();
+  requestAnimationFrame(animateSnow);
+}
+
+window.addEventListener('resize', () => {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+});
+
+
+
+let snowEnabled = true;
+let snowFrameId = null;
+
+function loopSnow() {
+  if (!snowEnabled) return;
+  drawSnowflakes();
+  updateSnowflakes();
+  snowFrameId = requestAnimationFrame(loopSnow);
+}
+
+function startSnow() {
+  if (!snowEnabled) return;
+  if (!snowFrameId) {
+    snowFrameId = requestAnimationFrame(loopSnow);
+  }
+}
+
+function stopSnow() {
+  if (snowFrameId) {
+    cancelAnimationFrame(snowFrameId);
+    snowFrameId = null;
+  }
+}
+
+
+const snowBtn = document.getElementById('toggle-snow');
+if (snowBtn) {
+  snowBtn.addEventListener('click', () => {
+    snowEnabled = !snowEnabled;
+    if (snowEnabled) {
+      canvas.style.display = '';
+      snowBtn.textContent = 'Снег: ВКЛ';
+      startSnow();
+    } else {
+      canvas.style.display = 'none';
+      snowBtn.textContent = 'Снег: ВЫКЛ';
+      stopSnow();
+    }
+  });
+}
+
+startSnow();

@@ -1,0 +1,143 @@
+/* Панель кнопок управления */
+.controls-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 32px;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 20;
+}
+
+.control-btn {
+  padding: 0.5em 1.6em;
+  font-size: 1.1rem;
+  border-radius: 1em;
+  border: none;
+  background: var(--btn-bg, #ffecc8);
+  color: var(--btn-color, #DA5252);
+  font-family: 'MinecraftRus', Arial, sans-serif;
+  box-shadow: 0 2px 8px #0002;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dark-theme .control-btn {
+  --btn-bg: #07003C;
+  --btn-color: #D1B500;
+}
+.time-block #timer {
+  margin-bottom: 2.2rem;
+}
+.time-block #timer, .timer-title {
+  color: var(--timer-text) !important;
+}
+@font-face {
+  font-family: 'MinecraftRus';
+  src: url('Minecraft Rus NEW.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Фон */
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #001f3f, #011627);
+  background-image: url('BG.svg'), linear-gradient(135deg, #001f3f, #011627);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Контейнер */
+.container {
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Заголовок */
+h1 {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  margin-bottom: 2rem;
+  color: gold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* Таймер */
+.timer {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Блоки времени */
+.time-block {
+  width: clamp(300px, 70vw, 850px);
+  height: clamp(200px, 30vh, 520px);
+  font-family: 'MinecraftRus', Arial, sans-serif;
+  background: #FFECC8;
+  border-style: solid;
+  border-width: 40px;
+  border-image-source: url('Border.svg');
+  border-image-slice: 40 40 40 40;
+  border-image-width: 40px 40px 40px 40px;
+  border-image-outset: 4px 4px 4px 4px;
+  border-image-repeat: repeat repeat;
+  background: #FFECC8;
+  margin-left: auto;
+  margin-right: auto;
+  background: var(--timer-bg);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  font-weight: bold;
+  color: #DA5252;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.timer-title {
+  font-family: 'MinecraftRus', Arial, sans-serif;
+  font-size: clamp(1.2rem, 3vw, 2.5rem);
+  color: #DA5252;
+  color: var(--timer-text);
+  margin-top: 1.5rem;
+  margin-bottom: 2.2rem;
+  text-align: center;
+  text-shadow: 0 1px 4px #fff3, 0 0 1px #bfa800;
+  text-shadow: 0 1px 4px #fff3, 0 0 1px #bfa800;
+  text-align: center;
+}
+
+.time-block:hover {
+  box-shadow: none;
+}
+
+.time-block:hover, .time-block:hover #timer, .time-block:hover .timer-title {
+  color: var(--timer-text);
+  text-shadow: 0 1px 4px #fff3, 0 0 1px #bfa800;
+}
+
+.time-block span {
+  font-size: clamp(2rem, 6vw, 5rem);
+  font-weight: bold;
+  display: block;
+  color: gold;
+}
+
+.time-block p {
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  margin: 0;
+  color: #ccc;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Year Timer 2025</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="controls-bar">
+    <button id="toggle-snow" class="control-btn">Снег: ВКЛ</button>
+    <button id="toggle-theme" class="control-btn">Тема: СВЕТЛАЯ</button>
+  </div>
+  <div class="container">
+    <div class="timer">
+      <div class="time-block">
+        <div class="timer-title" id="timer-title">До Нового Года осталось</div>
+        <div id="timer">00д 00ч 00м 00с</div>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <canvas id="snow-canvas" style="position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:1;"></canvas>
+  <script src="snow.js"></script>
+</body>
+</html>
