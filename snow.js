@@ -33,15 +33,16 @@ if (themeBtn) {
 
 setTheme(false);
 // Анимированный снег для NewYearTimer
-const canvas = document.getElementById('snow-canvas');
-const ctx = canvas.getContext('2d');
+
+let canvas = document.getElementById('snow-canvas');
+let ctx = canvas.getContext('2d');
 let width = window.innerWidth;
 let height = window.innerHeight;
 canvas.width = width;
 canvas.height = height;
 
-const snowflakes = [];
-const SNOWFLAKE_COUNT = Math.floor(width / 10);
+let snowflakes = [];
+let SNOWFLAKE_COUNT = Math.floor(width / 18); // меньше снежинок
 
 function randomBetween(a, b) {
   return a + Math.random() * (b - a);
@@ -58,11 +59,17 @@ function createSnowflake() {
   };
 }
 
-for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
-  snowflakes.push(createSnowflake());
+function initSnowflakes() {
+  snowflakes = [];
+  SNOWFLAKE_COUNT = Math.floor(window.innerWidth / 18);
+  for (let i = 0; i < SNOWFLAKE_COUNT; i++) {
+    snowflakes.push(createSnowflake());
+  }
 }
+initSnowflakes();
 
 function drawSnowflakes() {
+  ctx.shadowBlur = 3; // blur меньше
   ctx.clearRect(0, 0, width, height);
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
@@ -72,7 +79,7 @@ function drawSnowflakes() {
     ctx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
     ctx.fillStyle = '#fff';
     ctx.shadowColor = '#fff';
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 3;
     ctx.fill();
   }
   ctx.restore();
@@ -101,17 +108,22 @@ function animateSnow() {
   requestAnimationFrame(animateSnow);
 }
 
-window.addEventListener('resize', () => {
+
+function onResize() {
   width = window.innerWidth;
   height = window.innerHeight;
   canvas.width = width;
   canvas.height = height;
-});
+  initSnowflakes();
+}
+window.addEventListener('resize', onResize);
 
 
 
 let snowEnabled = true;
 let snowFrameId = null;
+let lastFrame = 0;
+const SNOW_FPS = 30; // ограничить FPS
 
 function loopSnow() {
   if (!snowEnabled) return;
@@ -127,21 +139,33 @@ function startSnow() {
   }
 }
 
+
 function stopSnow() {
   if (snowFrameId) {
     cancelAnimationFrame(snowFrameId);
     snowFrameId = null;
   }
+  if (ctx && canvas) ctx.clearRect(0, 0, width, height);
+  // Не очищаем snowflakes и не удаляем resize, чтобы можно было возобновить снег корректно
 }
 
 
 const snowBtn = document.getElementById('toggle-snow');
+
 if (snowBtn) {
   snowBtn.addEventListener('click', () => {
     snowEnabled = !snowEnabled;
     if (snowEnabled) {
       canvas.style.display = '';
+      ctx = canvas.getContext('2d');
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initSnowflakes();
+      window.addEventListener('resize', onResize);
       snowBtn.textContent = 'Снег: ВКЛ';
+      lastFrame = 0;
       startSnow();
     } else {
       canvas.style.display = 'none';
@@ -151,4 +175,6 @@ if (snowBtn) {
   });
 }
 
-startSnow();
+if (snowEnabled) {
+  startSnow();
+}
