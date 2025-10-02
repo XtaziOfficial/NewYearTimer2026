@@ -40,6 +40,10 @@
   font-style: normal;
 }
 /* Фон */
+:root {
+  --timer-bg: #FFECC8;
+  --timer-text: #DA5252;
+}
 body {
   margin: 0;
   font-family: "Arial", sans-serif;
@@ -84,7 +88,6 @@ h1 {
   width: clamp(300px, 70vw, 850px);
   height: clamp(200px, 30vh, 520px);
   font-family: 'MinecraftRus', Arial, sans-serif;
-  background: #FFECC8;
   border-style: solid;
   border-width: 40px;
   border-image-source: url('Border.svg');
@@ -92,7 +95,6 @@ h1 {
   border-image-width: 40px 40px 40px 40px;
   border-image-outset: 4px 4px 4px 4px;
   border-image-repeat: repeat repeat;
-  background: #FFECC8;
   margin-left: auto;
   margin-right: auto;
   background: var(--timer-bg);
@@ -101,7 +103,7 @@ h1 {
   justify-content: center;
   font-size: clamp(1.2rem, 4vw, 2.5rem);
   font-weight: bold;
-  color: #DA5252;
+  color: var(--timer-text);
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
@@ -121,9 +123,9 @@ h1 {
 }
 
 .time-block:hover {
-  box-shadow: none;
+  /* убран box-shadow: none и любые transform */
+  /* только цвет и тень */
 }
-
 .time-block:hover, .time-block:hover #timer, .time-block:hover .timer-title {
   color: var(--timer-text);
   text-shadow: 0 1px 4px #fff3, 0 0 1px #bfa800;
